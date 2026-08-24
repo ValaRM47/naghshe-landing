@@ -262,8 +262,25 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .result h2{font-size:22px;font-weight:800;color:var(--navy-ink);margin:0 0 8px}
   .result p{color:var(--muted);font-size:14.5px;margin:0 auto;max-width:46ch}
+  .result.qualified h2{font-size:clamp(18px,2.8vw,22px);line-height:1.6;max-width:26ch;margin:0 auto 10px}
+  .result.qualified p{font-size:15px;max-width:40ch}
+  .result-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+  .result-actions .btn-primary,.result-actions .btn-secondary{font-size:15.5px;padding:16px 24px}
+  .btn-secondary{display:inline-flex;align-items:center;gap:9px;justify-content:center;font-family:inherit;font-weight:700;color:#fff;text-decoration:none;border-radius:15px;border:none;cursor:pointer;background:var(--grad-navy);box-shadow:0 12px 26px -12px rgba(24,59,140,.6);transition:transform .2s var(--ease),box-shadow .2s}
+  .btn-secondary:hover{transform:translateY(-2px);box-shadow:0 18px 34px -14px rgba(24,59,140,.7)}
+  .btn-secondary:active{transform:translateY(0)}
+  .btn-secondary svg{width:19px;height:19px;flex:none}
+  .btn-primary{text-decoration:none}
+  @media(max-width:560px){.result-actions{flex-direction:column}.result-actions .btn-primary,.result-actions .btn-secondary{width:100%}}
   .result-badge{width:66px;height:66px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;background:rgba(245,163,0,.14);border:1px solid rgba(245,163,0,.3)}
   .result-badge svg{width:32px;height:32px;color:var(--orange-dark)}
+  .result-badge.info{background:rgba(24,59,140,.09);border-color:rgba(24,59,140,.22)}
+  .result-badge.info svg{width:30px;height:30px;color:var(--navy)}
+  .disqualified p{max-width:40ch}
+  .btn-call{margin-top:22px;text-decoration:none;direction:ltr}
+  .btn-call svg{width:20px;height:20px}
+  .btn-restart{display:block;margin:16px auto 2px;background:none;border:none;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:10px;transition:color .18s}
+  .btn-restart:hover{color:var(--navy)}
   .answers{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:22px 0 6px}
   .answer-chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:9px 13px;font-size:12.5px;color:var(--navy-ink);font-weight:600}
   .answer-chip .ac-icon{font-size:15px}
@@ -403,7 +420,7 @@
         {v:"engineer",    icon:"👷", title:"Electrical Engineer / Technologist", desc:"تحصیلات یا تجربه کاری در مهندسی و سیستم‌های برق دارم."},
         {v:"coordinator", icon:"📋", title:"Project Coordinator / Electrical Estimator", desc:"در هماهنگی پروژه، بررسی نقشه، برآورد یا تهیه متریال فعالیت می‌کنم."},
         {v:"construction",icon:"🏗", title:"Construction Professional", desc:"در پروژه‌های ساختمانی فعالیت دارم و با بخش Electrical پروژه در ارتباط هستم."},
-        {v:"new",         icon:"🌱", title:"New to the Field", desc:"قصد دارم وارد بازار کار برق یا پروژه‌های Electrical شوم."}
+        {v:"new",         icon:"🌱", title:"New to the Field", desc:"قصد دارم وارد بازار کار برق یا پروژه‌های Electrical شوم.", dq:true}
       ]
     },
     {
@@ -415,7 +432,7 @@
         {v:"bom",          icon:"📦", title:"BOM & Material Supply", desc:"برای شناسایی تجهیزات، تهیه لیست متریال و Material Supply."},
         {v:"estimation",   icon:"📊", title:"Estimation & Project Coordination", desc:"برای بررسی نقشه‌ها، برآورد و هماهنگی بهتر بخش Electrical پروژه."},
         {v:"job",          icon:"💼", title:"Job Preparation", desc:"برای تقویت مهارت‌های کاربردی و آمادگی بیشتر برای ورود به بازار کار."},
-        {v:"knowledge",    icon:"📚", title:"General Knowledge", desc:"صرفاً برای افزایش دانش و آشنایی عمومی با نقشه‌های برق."}
+        {v:"knowledge",    icon:"📚", title:"General Knowledge", desc:"صرفاً برای افزایش دانش و آشنایی عمومی با نقشه‌های برق.", dq:true}
       ]
     },
     {
@@ -439,7 +456,7 @@
         {v:"experienced", icon:"🟢", title:"تجربه دارم", desc:"با Electrical Drawings کار کرده‌ام و می‌خواهم مهارتم را تقویت کنم."},
         {v:"basic",       icon:"🟡", title:"آشنایی اولیه دارم", desc:"نقشه‌های برق را دیده‌ام، اما در خواندن و تحلیل آنها تسلط کافی ندارم."},
         {v:"none",        icon:"🔵", title:"تجربه نقشه‌خوانی ندارم", desc:"در حوزه برق یا پروژه فعالیت داشته‌ام، اما تجربه کمی در Electrical Drawings دارم."},
-        {v:"beginner",    icon:"⚪️", title:"کاملاً مبتدی هستم", desc:"سابقه یا آشنایی قبلی با برق و پروژه‌های Electrical ندارم."}
+        {v:"beginner",    icon:"⚪️", title:"کاملاً مبتدی هستم", desc:"سابقه یا آشنایی قبلی با برق و پروژه‌های Electrical ندارم.", dq:true}
       ]
     }
   ];
@@ -544,7 +561,8 @@
     locking = true;
     var v = btn.getAttribute("data-v");
     var i = +btn.getAttribute("data-i");
-    answers[q.key] = { v:v, icon:q.options[i].icon, title:q.options[i].title, qTitle:q.title };
+    var opt = q.options[i];
+    answers[q.key] = { v:v, icon:opt.icon, title:opt.title, qTitle:q.title };
 
     var opts = wzBody.querySelectorAll(".opt");
     opts.forEach(function(b){ b.classList.remove("selected"); b.setAttribute("aria-checked","false"); });
@@ -552,6 +570,7 @@
     btn.setAttribute("aria-checked","true");
 
     setTimeout(function(){
+      if(opt.dq){ renderDisqualified(); locking = false; return; }
       current++;
       render();
       locking = false;
@@ -577,31 +596,58 @@
   }
 
   function showResultCard(){
-    var chips = "";
-    Object.keys(answers).forEach(function(k){
-      var a = answers[k];
-      chips += '<span class="answer-chip"><span class="ac-icon" aria-hidden="true">'+a.icon+'</span>'
-        + '<span style="unicode-bidi:plaintext">'+a.title+'</span></span>';
-    });
-
-    wzBody.innerHTML =
-      '<div class="step result">'
-      + '<div class="result-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>'
-      + '<h2>پاسخ‌های شما ثبت شد ✅</h2>'
-      + '<p>این‌ها انتخاب‌های شماست. در گام بعد، مسیر و پیشنهاد دوره بر اساس همین پاسخ‌ها نمایش داده می‌شود.</p>'
-      + '<div class="answers">'+chips+'</div>'
-      + '<button class="btn-primary" id="ctaBtn">مشاهدهٔ مسیر پیشنهادی'
-      +   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5-7 7 7 7"/></svg>'
-      + '</button>'
-      + '<p class="placeholder-tag">این بخش موقت است — منطق شرطی و نتیجهٔ نهایی با <code>answers</code> بعداً افزوده می‌شود.</p>'
-      + '</div>';
-
     // expose collected answers for later wiring
     window.__wizardAnswers = answers;
-    var cta = document.getElementById("ctaBtn");
-    if(cta) cta.addEventListener("click", function(){
-      console.log("Wizard answers:", answers);
-    });
+
+    wzBody.innerHTML =
+      '<div class="step result qualified">'
+      + '<div class="result-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg></div>'
+      + '<h2>شرکت در این دوره می‌تونه درهای زیادی رو در بازار کار کانادا برای شما باز کنه.</h2>'
+      + '<p>شرکت در جلسه اول این دوره کاملاً رایگانه و بهتون پیشنهاد می‌کنیم که این جلسه رو از دست ندین.</p>'
+      + '<div class="result-actions">'
+      +   '<a class="btn-primary" id="freeSessionBtn" href="#">'
+      +     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 8 6 4-6 4V8z"/><rect x="2" y="3" width="20" height="18" rx="3"/></svg>'
+      +     'شرکت در جلسه رایگان'
+      +   '</a>'
+      +   '<a class="btn-secondary" id="enrollBtn" href="#">'
+      +     'مشاهده سرفصل‌های دوره و ثبت‌نام'
+      +     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5-7 7 7 7"/></svg>'
+      +   '</a>'
+      + '</div>'
+      + '</div>';
+  }
+
+  // ---- Disqualified (early exit) ----
+  function renderDisqualified(){
+    wzProgress.style.display = "none";
+    wzFoot.style.display = "none";
+    window.__wizardAnswers = answers;
+
+    wzBody.innerHTML =
+      '<div class="step result disqualified">'
+      + '<div class="result-badge info" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.36 1.78.7 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.48-1.27a2 2 0 0 1 2.11-.45c.82.34 1.7.57 2.6.7A2 2 0 0 1 22 16.92z"/></svg></div>'
+      + '<h2>این دوره برای شرایط فعلی شما مناسب نیست</h2>'
+      + '<p>برای دریافت <b>مشاورهٔ رایگان شغلی</b> و راهنمایی برای انتخاب مسیر درست، با ما تماس بگیرید.</p>'
+      + '<a class="btn-primary btn-call" href="tel:+19055052323">'
+      +   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.36 1.78.7 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.48-1.27a2 2 0 0 1 2.11-.45c.82.34 1.7.57 2.6.7A2 2 0 0 1 22 16.92z"/></svg>'
+      +   '<span class="en">+1 (905) 505 2323</span>'
+      + '</a>'
+      + '<button class="btn-restart" id="restartBtn">بازگشت به ابتدا</button>'
+      + '</div>';
+
+    var rb = document.getElementById("restartBtn");
+    if(rb) rb.addEventListener("click", restart);
+  }
+
+  function restart(){
+    answers = {};
+    current = 0;
+    locking = false;
+    stepWizard.hidden = true;
+    stepIntro.hidden = false;
+    wzProgress.style.display = "";
+    wzFoot.style.display = "";
+    window.scrollTo({top:0,behavior:"smooth"});
   }
 
 })();
