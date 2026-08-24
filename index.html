@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دورهٔ نقشه‌خوانی برق (Blueprint) | فناوران</title>
+<meta name="description" content="دورهٔ نقشه‌خوانی نقشه‌های برق (Electrical Drawings). ابتدا ویدیوی معرفی را ببینید، سپس با پاسخ به چند سؤال کوتاه، مسیر یادگیری متناسب با خودتان را پیدا کنید.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Design tokens — extracted from fanavaran.ca/l/pmp
+     Navy #183B8C / #1A3D9E · Orange #F5A300→#FFB800→#E09300
+     Off-white body #F8F7FA · discount red #D90429
+     ============================================================ */
+  :root{
+    --navy:#183B8C;
+    --navy-2:#1A3D9E;
+    --navy-ink:#14224a;
+    --orange:#F5A300;
+    --orange-light:#FFB800;
+    --orange-dark:#E09300;
+    --red:#D90429;
+    --bg:#F5F5FA;
+    --bg-2:#EEF0F7;
+    --card:#FFFFFF;
+    --line:#E4E7F1;
+    --line-strong:#d3d8e8;
+    --text:#1c2542;
+    --muted:#5b6480;
+    --muted-2:#828aa3;
+    --grad-navy:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);
+    --grad-orange:linear-gradient(90deg,var(--orange) 0%,var(--orange-light) 50%,var(--orange) 100%);
+    --shadow-sm:0 2px 8px rgba(24,59,140,.06);
+    --shadow-md:0 12px 34px -12px rgba(24,59,140,.22);
+    --shadow-lg:0 30px 70px -30px rgba(20,34,74,.40);
+    --radius:18px;
+    --radius-lg:24px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --maxw:820px;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:"Vazirmatn","Public Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(245,163,0,.07), transparent 60%),
+      radial-gradient(1000px 620px at -5% 0%, rgba(24,59,140,.08), transparent 55%),
+      var(--bg);
+    line-height:1.7;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit}
+  .en{font-feature-settings:"ss01";direction:ltr;unicode-bidi:isolate}
+  .num{font-feature-settings:"tnum"}
+
+  /* ---------- Top bar ---------- */
+  header.topbar{
+    position:sticky;top:0;z-index:40;
+    background:rgba(245,245,250,.82);
+    backdrop-filter:saturate(140%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{
+    max-width:1120px;margin:0 auto;padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+  .brand-mark{
+    width:38px;height:38px;border-radius:11px;flex:none;
+    background:var(--grad-navy);display:grid;place-items:center;
+    box-shadow:var(--shadow-sm);
+  }
+  .brand-mark svg{width:20px;height:20px}
+  .brand-name{font-weight:800;font-size:19px;letter-spacing:.5px;color:var(--navy);line-height:1}
+  .brand-tag{font-size:11px;color:var(--muted-2);font-weight:500;letter-spacing:.3px}
+  .topbar-actions{display:flex;align-items:center;gap:10px}
+  .tb-phone{
+    display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+    font-weight:600;font-size:14px;color:var(--navy);
+    padding:9px 14px;border-radius:12px;border:1px solid var(--line-strong);
+    background:var(--card);transition:border-color .2s,box-shadow .2s;
+  }
+  .tb-phone:hover{border-color:var(--navy);box-shadow:var(--shadow-sm)}
+  .tb-phone svg{width:16px;height:16px}
+  .btn-buy{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+    font-weight:700;font-size:14.5px;color:var(--navy);
+    padding:10px 18px;border-radius:13px;background:var(--grad-orange);
+    box-shadow:0 8px 20px -8px rgba(245,163,0,.7);
+    transition:transform .2s var(--ease),box-shadow .2s;
+  }
+  .btn-buy:hover{transform:translateY(-1px);box-shadow:0 12px 24px -8px rgba(245,163,0,.8)}
+  @media(max-width:640px){.tb-phone span{display:none}.brand-tag{display:none}}
+
+  /* ---------- Layout ---------- */
+  main{max-width:var(--maxw);margin:0 auto;padding:38px 20px 40px}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:13px;font-weight:600;color:var(--navy);
+    background:rgba(24,59,140,.07);border:1px solid rgba(24,59,140,.14);
+    padding:7px 14px;border-radius:999px;margin:0 0 18px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(245,163,0,.18)}
+
+  h1.hero{
+    font-size:clamp(28px,5.4vw,44px);font-weight:800;line-height:1.28;
+    color:var(--navy-ink);margin:0 0 14px;letter-spacing:-.3px;
+  }
+  h1.hero .accent{color:var(--navy);position:relative;white-space:nowrap}
+  h1.hero .accent::after{
+    content:"";position:absolute;inset-inline:0;bottom:.06em;height:.36em;
+    background:linear-gradient(90deg,rgba(245,163,0,.42),rgba(255,184,0,.42));
+    border-radius:4px;z-index:-1;
+  }
+  .hero-sub{font-size:clamp(15px,2.4vw,17px);color:var(--muted);max-width:60ch;margin:0 auto 4px}
+  .hero-en{direction:ltr;font-size:13px;letter-spacing:2.5px;font-weight:600;color:var(--muted-2);text-transform:uppercase;margin:2px 0 20px}
+  .hero-wrap{text-align:center;margin-bottom:26px}
+
+  /* ---------- Video ---------- */
+  .video-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:14px;box-shadow:var(--shadow-md);
+  }
+  .video-frame{
+    position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;
+    background:
+      linear-gradient(135deg,#122a68 0%,#1b3f9c 55%,#24509b 100%);
+    display:grid;place-items:center;cursor:pointer;
+  }
+  /* blueprint grid inside the video poster */
+  .video-frame::before{
+    content:"";position:absolute;inset:0;opacity:.5;
+    background-image:
+      linear-gradient(rgba(255,255,255,.10) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.10) 1px,transparent 1px),
+      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:64px 64px,64px 64px,16px 16px,16px 16px;
+    -webkit-mask-image:radial-gradient(120% 120% at 50% 40%,#000 30%,transparent 78%);
+            mask-image:radial-gradient(120% 120% at 50% 40%,#000 30%,transparent 78%);
+  }
+  .video-glow{position:absolute;width:60%;height:60%;background:radial-gradient(circle,rgba(245,163,0,.35),transparent 70%);filter:blur(30px);pointer-events:none}
+  .play-btn{
+    position:relative;z-index:2;width:88px;height:88px;border-radius:50%;
+    background:var(--grad-orange);border:none;cursor:pointer;
+    display:grid;place-items:center;
+    box-shadow:0 14px 40px -8px rgba(245,163,0,.65),0 0 0 12px rgba(255,255,255,.12);
+    transition:transform .25s var(--ease);
+  }
+  .video-frame:hover .play-btn{transform:scale(1.06)}
+  .play-btn svg{width:34px;height:34px;margin-inline-start:4px}
+  .play-btn::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(255,255,255,.28);animation:pulse 2.6s var(--ease) infinite}
+  @keyframes pulse{0%{transform:scale(1);opacity:.7}70%{transform:scale(1.35);opacity:0}100%{opacity:0}}
+  .video-meta{position:absolute;z-index:2;inset-inline-start:16px;bottom:14px;display:flex;align-items:center;gap:8px}
+  .chip-dark{display:inline-flex;align-items:center;gap:6px;background:rgba(10,20,50,.55);color:#fff;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:9px;backdrop-filter:blur(4px)}
+  .chip-dark svg{width:13px;height:13px}
+  .video-caption{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 8px 5px}
+  .video-caption h2{font-size:16px;font-weight:700;color:var(--navy-ink);margin:0}
+  .video-caption p{font-size:13px;color:var(--muted-2);margin:2px 0 0}
+
+  .start-row{display:flex;justify-content:center;margin-top:26px}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:10px;justify-content:center;
+    font-family:inherit;font-weight:800;font-size:17px;color:var(--navy-ink);
+    padding:16px 34px;border-radius:15px;border:none;cursor:pointer;
+    background:var(--grad-orange);box-shadow:0 14px 30px -10px rgba(245,163,0,.7);
+    transition:transform .2s var(--ease),box-shadow .2s;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 38px -12px rgba(245,163,0,.85)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-primary svg{width:20px;height:20px}
+  .start-hint{text-align:center;color:var(--muted-2);font-size:13px;margin-top:14px}
+  .start-hint b{color:var(--navy)}
+
+  /* ---------- Wizard ---------- */
+  .wizard{
+    position:relative;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+    padding:30px 28px 26px;overflow:hidden;
+  }
+  /* signature: faint blueprint grid + corner ticks */
+  .wizard::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+    background-image:
+      linear-gradient(rgba(24,59,140,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(24,59,140,.05) 1px,transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:linear-gradient(#000,transparent 75%);
+            mask-image:linear-gradient(#000,transparent 75%);
+  }
+  .wz-corner{position:absolute;width:16px;height:16px;border:2px solid rgba(24,59,140,.18);pointer-events:none}
+  .wz-corner.tl{top:12px;inset-inline-start:12px;border-inline-end:none;border-bottom:none}
+  .wz-corner.tr{top:12px;inset-inline-end:12px;border-inline-start:none;border-bottom:none}
+  .wizard>*{position:relative;z-index:1}
+
+  .progress-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px}
+  .progress-step{font-size:13.5px;font-weight:600;color:var(--navy)}
+  .progress-step b{color:var(--navy-ink)}
+  .progress-pct{font-size:12.5px;color:var(--muted-2);font-weight:600}
+  .progress-track{height:8px;border-radius:99px;background:var(--bg-2);overflow:hidden;margin-bottom:22px}
+  .progress-fill{height:100%;width:0;border-radius:99px;background:var(--grad-orange);transition:width .5s var(--ease)}
+
+  .q-head{margin-bottom:20px}
+  .q-index{display:inline-block;font-size:12.5px;font-weight:700;color:var(--orange-dark);letter-spacing:.4px;margin-bottom:8px}
+  .q-title{font-size:clamp(19px,3vw,23px);font-weight:800;color:var(--navy-ink);line-height:1.45;margin:0 0 6px}
+  .q-sub{font-size:14px;color:var(--muted);margin:0}
+
+  .options{display:grid;gap:11px}
+  .opt{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:start;
+    font-family:inherit;cursor:pointer;
+    background:#fbfcfe;border:1.5px solid var(--line-strong);border-radius:15px;
+    padding:14px 15px;transition:border-color .18s,background .18s,box-shadow .18s,transform .18s var(--ease);
+  }
+  .opt:hover{border-color:var(--navy);background:#fff;box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+  .opt:focus-visible{outline:3px solid rgba(24,59,140,.35);outline-offset:2px}
+  .opt-icon{
+    flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
+    font-size:23px;line-height:1;background:rgba(24,59,140,.06);border:1px solid rgba(24,59,140,.10);
+    transition:background .18s,border-color .18s;
+  }
+  .opt-body{flex:1;min-width:0}
+  .opt-title{display:block;font-size:15px;font-weight:700;color:var(--navy-ink);line-height:1.4;unicode-bidi:plaintext;text-align:start}
+  .opt-desc{display:block;font-size:13px;color:var(--muted);line-height:1.6;margin-top:3px}
+  .opt-check{
+    flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--line-strong);
+    display:grid;place-items:center;transition:border-color .18s,background .18s;
+  }
+  .opt-check svg{width:13px;height:13px;opacity:0;transform:scale(.4);transition:opacity .18s,transform .2s var(--ease)}
+  .opt.selected{border-color:var(--navy);background:#fff;box-shadow:0 10px 26px -14px rgba(24,59,140,.5)}
+  .opt.selected .opt-icon{background:rgba(245,163,0,.14);border-color:rgba(245,163,0,.35)}
+  .opt.selected .opt-check{border-color:var(--navy);background:var(--navy)}
+  .opt.selected .opt-check svg{opacity:1;transform:scale(1);color:#fff}
+
+  .wz-foot{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+  .btn-back{
+    display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-weight:600;font-size:14px;
+    color:var(--navy);background:none;border:none;cursor:pointer;padding:8px 6px;border-radius:10px;
+    transition:color .18s,gap .2s var(--ease);
+  }
+  .btn-back:hover{gap:11px}
+  .btn-back svg{width:16px;height:16px}
+  .btn-back[hidden]{visibility:hidden}
+  .wz-note{font-size:12.5px;color:var(--muted-2);display:inline-flex;align-items:center;gap:6px}
+  .wz-note svg{width:14px;height:14px}
+
+  /* step transition */
+  .step{animation:stepIn .45s var(--ease)}
+  @keyframes stepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- Result (placeholder) ---------- */
+  .result{text-align:center;padding:8px 4px}
+  .spinner{width:54px;height:54px;margin:6px auto 18px;border-radius:50%;border:5px solid var(--bg-2);border-top-color:var(--orange);animation:spin .9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .result h2{font-size:22px;font-weight:800;color:var(--navy-ink);margin:0 0 8px}
+  .result p{color:var(--muted);font-size:14.5px;margin:0 auto;max-width:46ch}
+  .result-badge{width:66px;height:66px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;background:rgba(245,163,0,.14);border:1px solid rgba(245,163,0,.3)}
+  .result-badge svg{width:32px;height:32px;color:var(--orange-dark)}
+  .answers{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:22px 0 6px}
+  .answer-chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:9px 13px;font-size:12.5px;color:var(--navy-ink);font-weight:600}
+  .answer-chip .ac-icon{font-size:15px}
+  .answer-chip .ac-q{color:var(--muted-2);font-weight:500}
+  .result .btn-primary{margin-top:24px}
+  .placeholder-tag{margin-top:20px;font-size:12px;color:var(--muted-2)}
+  .placeholder-tag code{background:var(--bg-2);padding:2px 7px;border-radius:6px;color:var(--navy)}
+
+  /* ---------- Footer ---------- */
+  footer{max-width:1120px;margin:36px auto 0;padding:22px 20px 30px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+  footer .f-copy{font-size:13px;color:var(--muted-2)}
+  footer nav{display:flex;gap:18px}
+  footer nav a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .18s}
+  footer nav a:hover{color:var(--navy)}
+
+  @media(max-width:560px){
+    main{padding:24px 15px 30px}
+    .wizard{padding:24px 17px 20px}
+    .video-card{padding:10px}
+    .opt{padding:12px}
+    .opt-icon{width:42px;height:42px;font-size:21px}
+    .opt-desc{font-size:12.5px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#" aria-label="فناوران">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="#FFB800" stroke="#fff" stroke-width="1.1" stroke-linejoin="round"/></svg>
+      </span>
+      <span>
+        <span class="brand-name en">FANAVARAN</span><br>
+        <span class="brand-tag en">Engineer Your Future Success</span>
+      </span>
+    </a>
+    <div class="topbar-actions">
+      <a class="tb-phone en" href="tel:+19055052323" aria-label="تماس تلفنی">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.36 1.78.7 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.48-1.27a2 2 0 0 1 2.11-.45c.82.34 1.7.57 2.6.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+1 (905) 505 2323</span>
+      </a>
+      <a class="btn-buy" href="#">خرید دوره</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- STEP 0: intro + video -->
+  <section id="step-intro" class="step">
+    <div class="hero-wrap">
+      <span class="eyebrow"><span class="dot"></span> پیش از شروع، این ویدیوی کوتاه را ببینید</span>
+      <h1 class="hero">نقشه‌های برق را مثل یک <span class="accent">حرفه‌ای</span> بخوان</h1>
+      <p class="hero-en">Electrical Drawings · Blueprint Course</p>
+      <p class="hero-sub">دورهٔ کاربردی نقشه‌خوانی برق برای بازار کار کانادا. ابتدا ویدیوی معرفی را ببینید، سپس با پاسخ به چند سؤال کوتاه، مسیر یادگیری متناسب با سطح و هدف خودتان را پیدا کنید.</p>
+    </div>
+
+    <div class="video-card">
+      <div class="video-frame" id="videoFrame" role="button" tabindex="0" aria-label="پخش ویدیوی معرفی دوره">
+        <span class="video-glow" aria-hidden="true"></span>
+        <button class="play-btn" aria-hidden="true" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="#14224a"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="video-meta">
+          <span class="chip-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span class="en">۳:۲۰</span></span>
+          <span class="chip-dark">ویدیوی معرفی دوره</span>
+        </div>
+      </div>
+      <div class="video-caption">
+        <div>
+          <h2>معرفی دوره و مسیر یادگیری</h2>
+          <p>در کمتر از ۴ دقیقه با محتوای دوره آشنا شوید</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="start-row">
+      <button class="btn-primary" id="startBtn">
+        شروع آزمون تعیین مسیر
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      </button>
+    </div>
+    <p class="start-hint">فقط <b>۴ سؤال کوتاه</b> · کمتر از یک دقیقه</p>
+  </section>
+
+  <!-- STEP 1..4 + result -->
+  <section id="step-wizard" class="step" hidden>
+    <div class="wizard">
+      <span class="wz-corner tl" aria-hidden="true"></span>
+      <span class="wz-corner tr" aria-hidden="true"></span>
+
+      <div id="wzProgress">
+        <div class="progress-head">
+          <span class="progress-step">سؤال <b id="pgCur">۱</b> از <span class="num">۴</span></span>
+          <span class="progress-pct" id="pgPct">۲۵٪</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="pgFill"></div></div>
+      </div>
+
+      <div id="wzBody" role="group" aria-live="polite"></div>
+
+      <div class="wz-foot" id="wzFoot">
+        <button class="btn-back" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          مرحله قبل
+        </button>
+        <span class="wz-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> پاسخ‌های شما محرمانه است</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="f-copy en">© 2026 Fanavaran · دورهٔ نقشه‌خوانی برق</span>
+  <nav>
+    <a href="#">حریم خصوصی</a>
+    <a href="#">قوانین</a>
+    <a href="#">تماس با ما</a>
+  </nav>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- Persian numerals helper ----
+  var FA = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+  function toFa(n){return String(n).replace(/[0-9]/g,function(d){return FA[+d];});}
+
+  // ---- Wizard data ----
+  var QUESTIONS = [
+    {
+      key:"role",
+      title:"موقعیت شغلی شما کدام است؟",
+      sub:"گزینه‌ای را انتخاب کنید که بیشتر با شرایط فعلی شما مطابقت دارد.",
+      options:[
+        {v:"electrician", icon:"⚡️", title:"Electrician / Electrical Technician / Apprentice", desc:"در حوزه اجرا، نصب یا تعمیرات سیستم‌های برق فعالیت می‌کنم."},
+        {v:"engineer",    icon:"👷", title:"Electrical Engineer / Technologist", desc:"تحصیلات یا تجربه کاری در مهندسی و سیستم‌های برق دارم."},
+        {v:"coordinator", icon:"📋", title:"Project Coordinator / Electrical Estimator", desc:"در هماهنگی پروژه، بررسی نقشه، برآورد یا تهیه متریال فعالیت می‌کنم."},
+        {v:"construction",icon:"🏗", title:"Construction Professional", desc:"در پروژه‌های ساختمانی فعالیت دارم و با بخش Electrical پروژه در ارتباط هستم."},
+        {v:"new",         icon:"🌱", title:"New to the Field", desc:"قصد دارم وارد بازار کار برق یا پروژه‌های Electrical شوم."}
+      ]
+    },
+    {
+      key:"goal",
+      title:"نقشه‌خوانی برق را بیشتر برای چه کاری نیاز دارید؟",
+      sub:"هدف اصلی شما از کار با Electrical Drawings چیست؟",
+      options:[
+        {v:"installation", icon:"🔧", title:"Installation & Construction", desc:"برای خواندن نقشه و اجرای صحیح سیستم‌های برق در پروژه."},
+        {v:"bom",          icon:"📦", title:"BOM & Material Supply", desc:"برای شناسایی تجهیزات، تهیه لیست متریال و Material Supply."},
+        {v:"estimation",   icon:"📊", title:"Estimation & Project Coordination", desc:"برای بررسی نقشه‌ها، برآورد و هماهنگی بهتر بخش Electrical پروژه."},
+        {v:"job",          icon:"💼", title:"Job Preparation", desc:"برای تقویت مهارت‌های کاربردی و آمادگی بیشتر برای ورود به بازار کار."},
+        {v:"knowledge",    icon:"📚", title:"General Knowledge", desc:"صرفاً برای افزایش دانش و آشنایی عمومی با نقشه‌های برق."}
+      ]
+    },
+    {
+      key:"challenge",
+      title:"کدام بخش Electrical Drawings برای شما چالش بیشتری دارد؟",
+      sub:"بخشی را انتخاب کنید که بیشتر نیاز دارید روی آن کار کنید.",
+      options:[
+        {v:"symbols",  icon:"📐", title:"Symbols, Legend, Notes & Details", desc:"درک علائم، توضیحات و جزئیات موجود در نقشه."},
+        {v:"lighting", icon:"💡", title:"Lighting, Receptacle & Control", desc:"خواندن نقشه روشنایی، پریزها و سیستم‌های کنترلی."},
+        {v:"sld",      icon:"⚡️", title:"Single Line Diagram & Panels", desc:"درک دیاگرام تک‌خطی، Panel و ارتباط تجهیزات."},
+        {v:"lowvolt",  icon:"🔌", title:"Low Voltage & Mechanical Systems", desc:"بررسی سیستم‌های Low Voltage و تجهیزات مکانیکی در نقشه برق."},
+        {v:"cutsheet", icon:"📑", title:"Cut-Sheets & Specifications", desc:"خواندن مشخصات فنی و Cut-Sheet تجهیزات."},
+        {v:"all",      icon:"🔄", title:"All of the Above", desc:"می‌خواهم مهارت نقشه‌خوانی را به‌صورت کامل‌تر یاد بگیرم."}
+      ]
+    },
+    {
+      key:"experience",
+      title:"تجربه شما در خواندن نقشه‌های Electrical چقدر است؟",
+      sub:"این سؤال کمک می‌کند مشخص شود سطح دوره با نیاز شما هماهنگ است یا نه.",
+      options:[
+        {v:"experienced", icon:"🟢", title:"تجربه دارم", desc:"با Electrical Drawings کار کرده‌ام و می‌خواهم مهارتم را تقویت کنم."},
+        {v:"basic",       icon:"🟡", title:"آشنایی اولیه دارم", desc:"نقشه‌های برق را دیده‌ام، اما در خواندن و تحلیل آنها تسلط کافی ندارم."},
+        {v:"none",        icon:"🔵", title:"تجربه نقشه‌خوانی ندارم", desc:"در حوزه برق یا پروژه فعالیت داشته‌ام، اما تجربه کمی در Electrical Drawings دارم."},
+        {v:"beginner",    icon:"⚪️", title:"کاملاً مبتدی هستم", desc:"سابقه یا آشنایی قبلی با برق و پروژه‌های Electrical ندارم."}
+      ]
+    }
+  ];
+
+  // ---- State ----
+  var answers = {};        // { role:{v,...}, goal:{...}, ... }
+  var current = 0;         // 0..QUESTIONS.length-1 ; === length => result
+  var locking = false;     // debounce during auto-advance
+
+  // ---- Elements ----
+  var stepIntro = document.getElementById("step-intro");
+  var stepWizard = document.getElementById("step-wizard");
+  var wzBody = document.getElementById("wzBody");
+  var wzProgress = document.getElementById("wzProgress");
+  var wzFoot = document.getElementById("wzFoot");
+  var pgCur = document.getElementById("pgCur");
+  var pgPct = document.getElementById("pgPct");
+  var pgFill = document.getElementById("pgFill");
+  var backBtn = document.getElementById("backBtn");
+
+  // ---- Video placeholder ----
+  var videoFrame = document.getElementById("videoFrame");
+  function playVideo(){
+    // Placeholder: real embed / <video> gets wired here later.
+    videoFrame.setAttribute("aria-label","ویدیو به‌زودی اضافه می‌شود");
+    var glow = videoFrame.querySelector(".play-btn");
+    if(glow){ glow.style.opacity=".55"; }
+    var meta = videoFrame.querySelector(".video-meta .chip-dark:last-child");
+    if(meta){ meta.textContent = "ویدیو به‌زودی اضافه می‌شود"; }
+  }
+  videoFrame.addEventListener("click", playVideo);
+  videoFrame.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); playVideo(); }});
+
+  // ---- Start ----
+  document.getElementById("startBtn").addEventListener("click", function(){
+    stepIntro.hidden = true;
+    stepWizard.hidden = false;
+    current = 0;
+    render();
+    stepWizard.querySelector(".wizard").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  backBtn.addEventListener("click", function(){
+    if(current === 0){
+      // back to intro
+      stepWizard.hidden = true;
+      stepIntro.hidden = false;
+      window.scrollTo({top:0,behavior:"smooth"});
+      return;
+    }
+    current--;
+    render();
+  });
+
+  // ---- Render current step ----
+  function render(){
+    if(current >= QUESTIONS.length){ renderResult(); return; }
+    wzProgress.style.display = "";
+    wzFoot.style.display = "";
+
+    var q = QUESTIONS[current];
+    var total = QUESTIONS.length;
+    var pct = Math.round(((current) / total) * 100); // progress = questions completed
+    // show progress reflecting the question you're ON (1-based) for a filling feel
+    var onPct = Math.round(((current+1) / total) * 100);
+    pgCur.textContent = toFa(current+1);
+    pgPct.textContent = toFa(onPct) + "٪";
+    pgFill.style.width = onPct + "%";
+
+    var chosen = answers[q.key] ? answers[q.key].v : null;
+    var html = '<div class="step"><div class="q-head">'
+      + '<span class="q-index en">Q'+(current+1)+' / '+total+'</span>'
+      + '<h2 class="q-title">'+q.title+'</h2>'
+      + '<p class="q-sub">'+q.sub+'</p></div>'
+      + '<div class="options" role="radiogroup" aria-label="'+q.title+'">';
+
+    q.options.forEach(function(o,i){
+      var sel = chosen === o.v ? " selected" : "";
+      html += '<button type="button" class="opt'+sel+'" role="radio" aria-checked="'+(chosen===o.v)+'" data-v="'+o.v+'" data-i="'+i+'">'
+        + '<span class="opt-icon" aria-hidden="true">'+o.icon+'</span>'
+        + '<span class="opt-body"><span class="opt-title">'+o.title+'</span>'
+        + '<span class="opt-desc">'+o.desc+'</span></span>'
+        + '<span class="opt-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'
+        + '</button>';
+    });
+    html += '</div>';
+    wzBody.innerHTML = html;
+
+    backBtn.hidden = false; // always allow going back (to intro on step 0)
+
+    // bind options
+    var opts = wzBody.querySelectorAll(".opt");
+    opts.forEach(function(btn){
+      btn.addEventListener("click", function(){ choose(q, btn); });
+    });
+    // focus first option for keyboard users
+    if(opts[0]) opts[0].focus();
+  }
+
+  function choose(q, btn){
+    if(locking) return;
+    locking = true;
+    var v = btn.getAttribute("data-v");
+    var i = +btn.getAttribute("data-i");
+    answers[q.key] = { v:v, icon:q.options[i].icon, title:q.options[i].title, qTitle:q.title };
+
+    var opts = wzBody.querySelectorAll(".opt");
+    opts.forEach(function(b){ b.classList.remove("selected"); b.setAttribute("aria-checked","false"); });
+    btn.classList.add("selected");
+    btn.setAttribute("aria-checked","true");
+
+    setTimeout(function(){
+      current++;
+      render();
+      locking = false;
+    }, 380);
+  }
+
+  // ---- Result (placeholder — wizard conditions wired later) ----
+  function renderResult(){
+    pgCur.textContent = toFa(QUESTIONS.length);
+    pgPct.textContent = "۱۰۰٪";
+    pgFill.style.width = "100%";
+    wzFoot.style.display = "none";
+
+    // loading state
+    wzBody.innerHTML =
+      '<div class="step result">'
+      + '<div class="spinner" aria-hidden="true"></div>'
+      + '<h2>در حال تحلیل پاسخ‌های شما…</h2>'
+      + '<p>بر اساس موقعیت شغلی، هدف و سطح تجربهٔ شما، مناسب‌ترین مسیر یادگیری را آماده می‌کنیم.</p>'
+      + '</div>';
+
+    setTimeout(showResultCard, 1600);
+  }
+
+  function showResultCard(){
+    var chips = "";
+    Object.keys(answers).forEach(function(k){
+      var a = answers[k];
+      chips += '<span class="answer-chip"><span class="ac-icon" aria-hidden="true">'+a.icon+'</span>'
+        + '<span style="unicode-bidi:plaintext">'+a.title+'</span></span>';
+    });
+
+    wzBody.innerHTML =
+      '<div class="step result">'
+      + '<div class="result-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>'
+      + '<h2>پاسخ‌های شما ثبت شد ✅</h2>'
+      + '<p>این‌ها انتخاب‌های شماست. در گام بعد، مسیر و پیشنهاد دوره بر اساس همین پاسخ‌ها نمایش داده می‌شود.</p>'
+      + '<div class="answers">'+chips+'</div>'
+      + '<button class="btn-primary" id="ctaBtn">مشاهدهٔ مسیر پیشنهادی'
+      +   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5-7 7 7 7"/></svg>'
+      + '</button>'
+      + '<p class="placeholder-tag">این بخش موقت است — منطق شرطی و نتیجهٔ نهایی با <code>answers</code> بعداً افزوده می‌شود.</p>'
+      + '</div>';
+
+    // expose collected answers for later wiring
+    window.__wizardAnswers = answers;
+    var cta = document.getElementById("ctaBtn");
+    if(cta) cta.addEventListener("click", function(){
+      console.log("Wizard answers:", answers);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
